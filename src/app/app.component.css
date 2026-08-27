@@ -1,0 +1,216 @@
+:host {
+  display: block;
+  padding: clamp(1.5rem, 1rem + 3vw, 4rem) 1.25rem 4rem;
+}
+
+.frame {
+  max-width: 60rem;
+  margin: 0 auto;
+}
+
+/* ── masthead ─────────────────────────────────────────────────────────── */
+.masthead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.5rem 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid var(--ink);
+}
+
+.title-block {
+  flex: 1 1 22rem;
+}
+
+h1 {
+  margin: 0 0 0.5rem;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: var(--step-3);
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.lede {
+  margin: 0;
+  max-width: var(--measure);
+  color: var(--muted);
+  font-size: var(--step-1);
+}
+
+.clock {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  align-items: flex-end;
+  text-align: right;
+}
+
+.clock-label,
+.stat-label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.clock-value {
+  font-family: var(--font-mono);
+  font-size: var(--step-1);
+  font-weight: 500;
+}
+
+/* ── status strip ────────────────────────────────────────────────────── */
+.status {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: 1px;
+  margin: 1.5rem 0 2rem;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 0.9rem 1rem 1rem;
+  background: var(--surface);
+}
+
+.stat-value {
+  font-family: var(--font-mono);
+  font-size: var(--step-2);
+  font-weight: 500;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+.countdown .stat-value {
+  color: var(--accent-ink);
+}
+
+.track {
+  margin-top: 0.55rem;
+  height: 3px;
+  background: var(--line-soft);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.track-fill {
+  height: 100%;
+  width: 100%;
+  transform-origin: left;
+  background: var(--accent);
+  transition: transform 0.9s linear;
+}
+
+/* ── log table ───────────────────────────────────────────────────────── */
+.table-scroll {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.log {
+  width: 100%;
+  min-width: 34rem;
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: 0.9375rem;
+}
+
+.log th,
+.log td {
+  padding: 0.5rem 1rem;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.log thead th {
+  position: sticky;
+  top: 0;
+  background: var(--surface);
+  border-bottom: 1px solid var(--ink);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.log tbody tr {
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.log tbody tr:last-child {
+  border-bottom: 0;
+}
+
+.col-num {
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.col-word {
+  color: var(--ink);
+}
+
+.col-seq {
+  color: var(--accent-ink);
+  letter-spacing: 0.04em;
+}
+
+.col-time {
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  width: 1%;
+}
+
+tr.is-new {
+  animation: arrive 1.4s ease-out;
+}
+
+tr.is-new .col-seq {
+  color: var(--pulse);
+}
+
+@keyframes arrive {
+  0% {
+    background: var(--pulse-wash);
+    box-shadow: inset 3px 0 0 var(--pulse);
+  }
+  100% {
+    background: transparent;
+    box-shadow: inset 3px 0 0 transparent;
+  }
+}
+
+/* ── colophon ────────────────────────────────────────────────────────── */
+.colophon {
+  margin-top: 1.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.colophon em {
+  font-style: normal;
+  color: var(--ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track-fill {
+    transition: none;
+  }
+  tr.is-new {
+    animation: none;
+    background: var(--pulse-wash);
+  }
+}

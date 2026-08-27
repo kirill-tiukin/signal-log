@@ -1,0 +1,73 @@
+<div class="frame">
+  <header class="masthead">
+    <div class="title-block">
+      <h1>Signal Log</h1>
+      <p class="lede">
+        A deterministic emitter. One row &mdash; a word and a random sequence &mdash; every
+        {{ intervalMinutes }} minutes, counted from a fixed epoch. The table is a pure
+        function of time, so every visitor sees the same history and the same last-updated
+        mark.
+      </p>
+    </div>
+    <div class="clock" aria-live="off">
+      <span class="clock-label">UTC now</span>
+      <time class="clock-value">{{ feed.clock() | date: 'yyyy-MM-dd HH:mm:ss' : 'UTC' }}</time>
+    </div>
+  </header>
+
+  <section class="status" aria-label="Emitter status">
+    <div class="stat">
+      <span class="stat-label">Rows emitted</span>
+      <span class="stat-value">{{ feed.totalCount() | number }}</span>
+    </div>
+    <div class="stat">
+      <span class="stat-label">Last updated</span>
+      @if (feed.lastUpdated(); as updated) {
+        <time id="last-updated" class="stat-value" [attr.datetime]="updated.toISOString()">
+          {{ updated | date: 'yyyy-MM-dd HH:mm' : 'UTC' }}Z
+        </time>
+      } @else {
+        <span class="stat-value">&mdash;</span>
+      }
+    </div>
+    <div class="stat countdown">
+      <span class="stat-label">Next row in</span>
+      <span class="stat-value tnum">{{ countdown() }}</span>
+      <div class="track" role="progressbar" [attr.aria-valuenow]="(feed.windowProgress() * 100) | number: '1.0-0'" aria-valuemin="0" aria-valuemax="100">
+        <div class="track-fill" [style.transform]="'scaleX(' + feed.windowProgress() + ')'"></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="table-scroll">
+    <table class="log">
+      <thead>
+        <tr>
+          <th scope="col" class="col-num">#</th>
+          <th scope="col" class="col-word">Word</th>
+          <th scope="col" class="col-seq">Sequence</th>
+          <th scope="col" class="col-time">Emitted (UTC)</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (row of feed.rows(); track row.index) {
+          <tr [class.is-new]="row.index === flashIndex()">
+            <td class="col-num">{{ row.index | number }}</td>
+            <td class="col-word">{{ row.word }}</td>
+            <td class="col-seq">{{ row.sequence }}</td>
+            <td class="col-time">
+              <time [attr.datetime]="isoUtc(row.timestamp)">
+                {{ row.timestamp | date: 'yyyy-MM-dd HH:mm' : 'UTC' }}
+              </time>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <footer class="colophon">
+    Showing the newest {{ maxVisible | number }} rows. Word and sequence for row <em>n</em>
+    are seeded from <em>n</em> alone &mdash; reload and they do not change.
+  </footer>
+</div>
